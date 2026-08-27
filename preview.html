@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nick Cosmetics — Change Preview</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  /* Preview-only scaffolding -- none of this ships in the real app,
+     it's just to lay out this one-page tour of the changes. */
+  body { padding: 0; }
+  .preview-shell { display: flex; min-height: 100vh; }
+  .preview-nav {
+    width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+    overflow-y: auto; padding: 24px 16px; border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .preview-nav h1 { font-family: 'Sora', sans-serif; font-size: 15px; margin: 0 0 4px; }
+  .preview-nav p { color: var(--ink-muted); font-size: 12px; margin: 0 0 20px; }
+  .preview-nav a {
+    display: block; padding: 8px 10px; border-radius: 8px; color: var(--ink-muted);
+    text-decoration: none; font-size: 12.5px; margin-bottom: 2px;
+  }
+  .preview-nav a:hover { background: var(--bg); color: var(--ink); }
+  .preview-main { flex: 1; padding: 40px 48px 120px; max-width: 980px; }
+  .preview-section { margin-bottom: 72px; scroll-margin-top: 24px; }
+  .preview-section .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+  }
+  .preview-section h2 { font-family: 'Sora', sans-serif; font-size: 22px; margin: 0 0 8px; }
+  .preview-section .desc { color: var(--ink-muted); font-size: 13.5px; line-height: 1.6; margin: 0 0 24px; max-width: 640px; }
+  .preview-frame {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px; box-shadow: var(--shadow);
+  }
+  .preview-frame + .preview-frame { margin-top: 16px; }
+  .frame-label {
+    font-size: 11px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .frame-label.before::before { content: "○"; color: var(--ink-faint); }
+  .frame-label.after::before { content: "●"; color: var(--success); }
+  .no-more-badge {
+    display: inline-block; margin-left: 8px; background: var(--success-tint); color: var(--success);
+    font-size: 10.5px; padding: 2px 7px; border-radius: 999px; text-transform: none; letter-spacing: 0;
+  }
+  .already-worked-card {
+    background: var(--success-tint); border: 1px solid var(--success); border-radius: var(--radius);
+    padding: 20px 24px;
+  }
+  .already-worked-card h3 { margin: 0 0 6px; color: var(--success); font-size: 15px; }
+  .already-worked-card p { margin: 0; color: var(--ink); font-size: 13px; }
+  .strike { text-decoration: line-through; color: var(--ink-faint); }
+</style>
+</head>
+<body>
+
+<div class="preview-shell">
+  <nav class="preview-nav">
+    <h1>Change preview</h1>
+    <p>Static mock-ups of every shipped change, using the real app stylesheet. No backend behind this page.</p>
+    <a href="#branch-context">1. Global branch context</a>
+    <a href="#expiry-alert">2. Expiry Alert</a>
+    <a href="#timezone">3. Nigeria timezone fix</a>
+    <a href="#shift-autoclose">4. Shift auto-close</a>
+    <a href="#branch-form">5. Branch form</a>
+    <a href="#bookings-price">6. Open Bookings price</a>
+    <a href="#staff-grant">7. Staff permission grants</a>
+    <a href="#already-worked">Already worked (checked, no change)</a>
+  </nav>
+
+  <main class="preview-main">
+
+    <!-- ============================================================ 1 -->
+    <section class="preview-section" id="branch-context">
+      <div class="eyebrow">Change 1</div>
+      <h2>Global branch context</h2>
+      <p class="desc">Every page used to have its own independent "All branches" dropdown. Now there's exactly one, on the Dashboard — every other page shows a read-only badge reflecting that same choice, and it's remembered across page loads until you change it.</p>
+
+      <div class="frame-label before">Before — POS had its own selector</div>
+      <div class="preview-frame">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--ink-muted);font-size:13px;">POS top bar:</span>
+          <select style="padding:7px 10px;border-radius:7px;border:1px solid var(--border);font:inherit;background:var(--surface-raised);color:var(--ink);" disabled>
+            <option>Jalingo Branch</option>
+            <option>Main Shop</option>
+          </select>
+          <span style="color:var(--ink-faint);font-size:12px;">← its own dropdown, unrelated to what's selected on the Dashboard</span>
+        </div>
+      </div>
+
+      <div class="frame-label after">After — reads the Dashboard's selection</div>
+      <div class="preview-frame">
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+          <div>
+            <div style="color:var(--ink-muted);font-size:12px;margin-bottom:6px;">Dashboard (the only real selector):</div>
+            <select style="padding:7px 10px;border-radius:7px;border:1px solid var(--border);font:inherit;background:var(--surface-raised);color:var(--ink);">
+              <option>All branches</option>
+              <option selected>Main Shop</option>
+              <option>Jalingo Branch</option>
+            </select>
+          </div>
+          <div style="font-size:20px;color:var(--ink-faint);">→</div>
+          <div>
+            <div style="color:var(--ink-muted);font-size:12px;margin-bottom:6px;">POS / Sales / Invoice / Credit / Inventory / Low Stock / Warehouse / Reports / Shifts:</div>
+            <span class="branch-context-badge">Branch: <strong>Main Shop</strong></span>
+          </div>
+        </div>
+        <p style="margin:16px 0 0;font-size:12.5px;color:var(--ink-faint);">Change the branch once on the Dashboard, and it stays that way everywhere — including after closing and reopening the app.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 2 -->
+    <section class="preview-section" id="expiry-alert">
+      <div class="eyebrow">Change 2</div>
+      <h2>Expiry Alert</h2>
+      <p class="desc">A new blinking Dashboard card next to Low Stock / Out of Stock, and a new table on the Low Stock page with product photo, barcode, quantity, expiry date, and supplier.</p>
+
+      <div class="frame-label after">Dashboard KPI row</div>
+      <div class="preview-frame">
+        <div class="kpi-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+          <div class="kpi-card danger low-stock-blinking">
+            <div class="label">Low stock alerts</div>
+            <div class="value">7</div>
+            <div class="sub"><a href="#" style="color:var(--danger);">View details →</a></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.86 1.82 18a1.5 1.5 0 0 0 1.3 2.25h17.76a1.5 1.5 0 0 0 1.3-2.25L13.7 3.86a1.5 1.5 0 0 0-2.6 0Z"/><path d="M12 9v4"/><path d="M12 16.5h.01"/></svg></div>
+          </div>
+          <div class="kpi-card danger low-stock-blinking">
+            <div class="label">Expiry alerts</div>
+            <div class="value">3</div>
+            <div class="sub"><a href="#" style="color:var(--danger);">View details →</a></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+          </div>
+          <div class="kpi-card danger">
+            <div class="label">Out of stock</div>
+            <div class="value">2</div>
+            <div class="sub"><a href="#" style="color:var(--danger);">View details →</a></div>
+            <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M8 8l8 8M16 8l-8 8"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-label after">Low Stock page — new "Expiry Alert" table</div>
+      <div class="preview-frame">
+        <div class="table-card" style="box-shadow:none;">
+          <h3 style="margin:0 0 12px;">Expiry Alert</h3>
+          <table>
+            <thead><tr><th></th><th>Product</th><th>Barcode</th><th>Qty on stock</th><th>Expiry date</th><th>Supplier</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#f2b84b,#f56d63);"></div></td>
+                <td><strong>Nivea Body Lotion</strong><div style="color:var(--ink-faint);font-size:12.5px;">400ml</div></td>
+                <td class="mono">6901234123457</td>
+                <td>18</td>
+                <td><span class="stock-pill out">14 Sep 2026 · 18d</span></td>
+                <td>Lagos Cosmetics Distributors</td>
+              </tr>
+              <tr>
+                <td><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#4f8cff,#34d399);"></div></td>
+                <td><strong>Vaseline Petroleum Jelly</strong><div style="color:var(--ink-faint);font-size:12.5px;">100ml</div></td>
+                <td class="mono">6901234198765</td>
+                <td>42</td>
+                <td><span class="stock-pill low">02 Nov 2026 · 67d</span></td>
+                <td>Amina Wholesale Ltd</td>
+              </tr>
+              <tr>
+                <td><div style="width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,#c084fc,#4f8cff);"></div></td>
+                <td><strong>Dettol Antiseptic</strong><div style="color:var(--ink-faint);font-size:12.5px;">250ml</div></td>
+                <td class="mono">6901234111222</td>
+                <td>9</td>
+                <td><span class="stock-pill low">30 Nov 2026 · 95d</span></td>
+                <td><span style="color:var(--ink-faint)">—</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin:12px 0 0;font-size:12.5px;color:var(--ink-faint);">Product photo is click-to-zoom, reusing the same lightbox already used on the low-stock table above it.</p>
+      </div>
+    </section>
+
+    <!-- ============================================================ 3 -->
+    <section class="preview-section" id="timezone">
+      <div class="eyebrow">Change 3</div>
+      <h2>Nigeria timezone fix</h2>
+      <p class="desc">The bug wasn't in how times were <em>displayed</em> — the frontend was already formatting everything correctly in Africa/Lagos, 12-hour time. It was in how the backend <em>stored</em> timestamps: no timezone attached, which could get read back as local browser time instead of UTC, silently shifting every clock by up to an hour.</p>
+      <div class="preview-frame">
+        <table>
+          <thead><tr><th>Event stored at 10:00am WAT</th><th>Before (backend bug)</th><th>After (fixed)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td>Shift opened</td>
+              <td><span class="stock-pill out">Displayed 09:00 AM or 11:00 AM</span></td>
+              <td><span class="stock-pill ok">Displayed 10:00 AM</span></td>
+            </tr>
+            <tr>
+              <td>Sale receipt printed</td>
+              <td><span class="stock-pill out">Off by up to 1 hour</span></td>
+              <td><span class="stock-pill ok">Matches till clock exactly</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============================================================ 4 -->
+    <section class="preview-section" id="shift-autoclose">
+      <div class="eyebrow">Change 4</div>
+      <h2>Shift auto-close + forced next-day confirmation</h2>
+      <p class="desc">A shift left open past 11:59pm is now closed automatically. The staff member can't open a new shift — or ring up a sale — until they confirm what was actually counted in the drawer for the missed day.</p>
+
+      <div class="frame-label after">POS load — blocking prompt</div>
+      <div class="preview-frame" style="display:flex;justify-content:center;padding:40px 24px;">
+        <div class="modal" style="position:static;max-width:380px;">
+          <h3>Confirm yesterday's shift</h3>
+          <p class="modal-sub">You didn't close your shift from August 25, 2026 — it was closed automatically at midnight. Enter what was actually counted in the drawer at close to continue.</p>
+          <div class="field">
+            <label>Counted cash at close (₦)</label>
+            <input type="number" placeholder="0.00" disabled />
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-primary" disabled>Confirm &amp; continue</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-label after">Shifts page — flagged in the history table</div>
+      <div class="preview-frame">
+        <div class="table-card" style="box-shadow:none;">
+          <table>
+            <thead><tr><th>Opened</th><th>Closed</th><th>Staff</th><th>Branch</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>25 Aug, 07:02 AM</td>
+                <td>25 Aug, 11:59 PM</td>
+                <td>Halima Yusuf</td>
+                <td>Jalingo Branch</td>
+                <td>
+                  <span class="stock-pill ok">Closed</span>
+                  <div style="color:var(--danger);font-size:11.5px;margin-top:2px;">⚠ Auto-closed — didn't close on time</div>
+                </td>
+              </tr>
+              <tr>
+                <td>26 Aug, 07:11 AM</td>
+                <td>26 Aug, 09:40 PM</td>
+                <td>Halima Yusuf</td>
+                <td>Jalingo Branch</td>
+                <td><span class="stock-pill ok">Closed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="frame-label after">Shifts page — new manager-facing report</div>
+      <div class="preview-frame">
+        <div class="table-card" style="box-shadow:none;">
+          <h3 style="margin:0 0 4px;">Staff not closing their shifts</h3>
+          <p style="margin:0 0 12px;color:var(--ink-muted);font-size:13px;">Shifts the system had to auto-close at midnight in the last 30 days — worth a word with these staff.</p>
+          <table>
+            <thead><tr><th>Staff</th><th>Branch</th><th>Opened</th><th>Auto-closed at</th></tr></thead>
+            <tbody>
+              <tr><td>Halima Yusuf</td><td>Jalingo Branch</td><td>25 Aug, 07:02 AM</td><td>25 Aug, 11:59 PM</td></tr>
+              <tr><td>Emeka Obi</td><td>Main Shop</td><td>21 Aug, 08:15 AM</td><td>21 Aug, 11:59 PM</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 5 -->
+    <section class="preview-section" id="branch-form">
+      <div class="eyebrow">Change 5</div>
+      <h2>Branch form simplified</h2>
+      <p class="desc">Address comes first, phone number is gone, and "this is a warehouse" is gone — every branch has its own warehouse workflow now, there's nothing to flag.</p>
+
+      <div style="display:flex;gap:24px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:260px;">
+          <div class="frame-label before">Before</div>
+          <div class="preview-frame">
+            <div class="modal" style="position:static;max-width:none;">
+              <h3>New branch</h3>
+              <div class="field"><label>Branch name</label><input disabled /></div>
+              <div class="field"><label>Address</label><input disabled /></div>
+              <div class="field"><label class="strike">Phone</label><input disabled /></div>
+              <div class="field"><label class="checkbox strike" style="display:flex;gap:8px;align-items:center;"><input type="checkbox" disabled /> This is a warehouse</label></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:260px;">
+          <div class="frame-label after">After</div>
+          <div class="preview-frame">
+            <div class="modal" style="position:static;max-width:none;">
+              <h3>New branch</h3>
+              <div class="field"><label>Address</label><input disabled /></div>
+              <div class="field"><label>Branch name</label><input disabled /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 6 -->
+    <section class="preview-section" id="bookings-price">
+      <div class="eyebrow">Change 6</div>
+      <h2>Open Bookings — Initial price column</h2>
+      <p class="desc">The original item price now shows alongside deposit paid and balance due, instead of just the two.</p>
+      <div class="preview-frame">
+        <div class="table-card" style="box-shadow:none;">
+          <table>
+            <thead><tr><th>Date</th><th>Cashier</th><th>Items</th><th>Initial price</th><th>Deposit paid</th><th>Balance due</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>20 Aug</td>
+                <td>Bola Adeyemi</td>
+                <td>1× Wig — 24"</td>
+                <td>₦45,000.00</td>
+                <td>₦10,000.00</td>
+                <td><strong>₦35,000.00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ 7 -->
+    <section class="preview-section" id="staff-grant">
+      <div class="eyebrow">Change 7</div>
+      <h2>Per-staff permission grants</h2>
+      <p class="desc">A trusted staff member can be handed one or two extra abilities without upgrading them to Branch Manager — mirrors the existing "Restrict access" flow used on branch managers, in reverse.</p>
+
+      <div class="frame-label after">Staff row — new action button</div>
+      <div class="preview-frame">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid var(--border);border-radius:8px;">
+          <div>
+            <strong>Chidinma Eze</strong>
+            <span class="status-pill active" style="margin-left:8px;">Staff</span>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-ghost btn-sm" disabled>Edit</button>
+            <button class="btn btn-ghost btn-sm" disabled>Reset password</button>
+            <button class="btn btn-ghost btn-sm" disabled>Grant extra access</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="frame-label after">Grant extra access modal</div>
+      <div class="preview-frame" style="display:flex;justify-content:center;padding:40px 24px;">
+        <div class="modal" style="position:static;max-width:380px;">
+          <h3>Grant extra access</h3>
+          <p class="modal-sub">Give Chidinma Eze one or two extra abilities beyond the normal Staff role — without upgrading their role.</p>
+          <div class="field">
+            <label class="checkbox" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><input type="checkbox" checked disabled /> Manage staff accounts</label>
+            <label class="checkbox" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><input type="checkbox" checked disabled /> Manage inventory &amp; warehouse</label>
+            <label class="checkbox" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><input type="checkbox" disabled /> Issue &amp; void coupons</label>
+            <label class="checkbox" style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><input type="checkbox" disabled /> Configure system settings</label>
+            <label class="checkbox" style="display:flex;align-items:center;gap:8px;"><input type="checkbox" disabled /> Manage device sync</label>
+          </div>
+          <div class="modal-actions"><button class="btn btn-primary" disabled>Save extra access</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ already worked -->
+    <section class="preview-section" id="already-worked">
+      <div class="eyebrow">Checked, no change needed</div>
+      <h2>Already worked correctly</h2>
+      <p class="desc">Two items from the original list turned out to already be built exactly as described — nothing to preview because nothing changed.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="already-worked-card">
+          <h3>Credit list — print receipt after full payoff</h3>
+          <p>The Print Receipt button already appears in the credit detail view regardless of status, and already switches between a "payment" receipt and a "completed" receipt automatically.</p>
+        </div>
+        <div class="already-worked-card">
+          <h3>Category → Product → Variant flow</h3>
+          <p>Add Product already follows Name → Category → variant dropdowns driven by that category's saved configuration. There's no separate "Configure Variant" step anywhere in the flow.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+</body>
+</html>
